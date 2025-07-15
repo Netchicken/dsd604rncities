@@ -1,129 +1,119 @@
-import SQLite from 'react-native-sqlite-storage';
-import {ToastAndroid} from 'react-native';
-//const db = {};
+import SQLite from "react-native-sqlite-storage";
 
-// export const createOpenDB = () => {
-//   //open the database ready for operations
-//   //SQLite.DEBUG(false); //hides annoying errors
-//   //SQLite.enablePromise(false);
+//use this to test if the database has been created correctly, otherwise you can't tell if createTable is working
 
-//   SQLite.DEBUG(true);
-//   SQLite.enablePromise(false);
-
-//   db = SQLite.openDatabase(
-//     {
-//       name: 'Store.db',
-//       location: 'default', //'~android/app/src/main/assets/www/Store.db',
-//     },
-//     () => {
-//       console.log('GamePlay DB open exists', 'success');
-//     },
-//     error => {
-//       console.log('GamePlay DB open error', error);
-//     },
-//   );
-// };
-
-export const DBInsert = selectedCity => {
-  ToastAndroid.showWithGravity(
-    selectedCity + ' has been added to the Database! ',
-    ToastAndroid.LONG,
-    ToastAndroid.CENTER,
-  );
-
-  var db = SQLite.openDatabase({name: 'Store.db', location: 'default'});
-  if (selectedCity.length == 0) {
-    ToastAndroid.showWithGravity(
-      'Warning! selectedCity is empty',
-      ToastAndroid.LONG,
-      ToastAndroid.CENTER,
-    );
-  } else {
-    try {
-      db.transaction(tx => {
-        tx.executeSql(
-          `INSERT INTO Users (City) VALUES("${selectedCity}")`, //you must use this structure with executesql not usual sql
-          () => {
-            ToastAndroid.showWithGravity(
-              'Success! ' + selectedCity + ' has been updated to the Database.',
-              ToastAndroid.LONG,
-              ToastAndroid.CENTER,
-            );
-          },
-        );
-      });
-    } catch (error) {
-      ToastAndroid.showWithGravity(
-        'Sad! ' +
-          selectedCity +
-          ' has not been updated in the database.' +
-          error,
-        ToastAndroid.LONG,
-        ToastAndroid.CENTER,
-      );
+export const deleteDatabase = () => {
+  console.log("Deleting database...");
+  SQLite.deleteDatabase(
+    { name: "calcDB.db", location: "default" },
+    () => {
+      console.log("Database deleted successfully");
+    },
+    (error) => {
+      console.log("Error deleting database:", error);
     }
-  }
+  );
 };
 
-export const DBSelect = () => {
-  // ToastAndroid.showWithGravity(
-  //   'DBSelect! ',
-  //   ToastAndroid.LONG,
-  //   ToastAndroid.CENTER,
-  // );
+// CreateTable creates the SQLite table if it does not already exist.
+// This function is called once when the app starts to ensure the table is ready for use.
+export const createTable = (db) => {
+  const createString = "CREATE TABLE IF NOT EXISTS AllAnswers(Id INTEGER PRIMARY KEY AUTOINCREMENT, answer TEXT)";
 
-  var db = SQLite.openDatabase({name: 'Store.db', location: 'default'});
-  db.transaction(tx => {
-    tx.executeSql('SELECT City FROM Users', [], (tx, results) => {
-      var data = results;
+  db.transaction(
+    (tx) => {
+      tx.executeSql(createString);
+    },
+    (error) => {
+      console.log("Error creating table:", error);
+    }
+  );
+  console.log("Table created or already exists");
+};
 
-      // ToastAndroid.showWithGravity(
-      //   'DBSelect count of results = ' + data.rows.length,
-      //   ToastAndroid.SHORT,
-      //   ToastAndroid.CENTER,
-      // );
+//loadDB opens the SQLite database and returns the database object.
+export const loadDB = () => {
+  return SQLite.openDatabase(
+    { name: "calcDB.db", location: "default" },
+    () => {
+      console.log("DB opened for real");
+    },
+    (error) => {
+      console.log("DB open error:", error);
+    }
+  );
+};
 
-      return data;
-      // setCities([]); //empty state
-      // for (let i = 0; i < len; i++) {
-      //   console.log(
-      //     'Operations selectDataHandler results',
-      //     results.rows.item(i).City,
-      //   );
-      //   //get the city
-      //   var city = results.rows.item(i).City;
-      //   //spread the hook, add in the new city
-      //   setCities(cities => {
-      //     return [...cities, city];
-      //   });
-      // }
-    });
+// Add item to the database
+// This function is called after the table is created
+export const addItem = (calcResult, db) => {
+  if (!calcResult) return;
+  db.transaction(
+    (tx) => {
+      tx.executeSql(
+        "INSERT INTO AllAnswers (answer) VALUES (?)",
+        [calcResult],
+        () => {
+          console.log("Item added to database:", calcResult);
+          // Clear the context after adding
+          //It also prevents duplicate entries if the user doesn’t change the calculation.
+        },
+        (tx, error) => {
+          console.log("Error inserting item:", error);
+        }
+      );
+    },
+    (error) => {
+      console.log("Transaction error:", error);
+    }
+  );
+};
+
+// Function to clear all answers from the database
+export const clearDatabase = (db) => {
+  console.log("Clearing database...");
+  db.transaction(
+    (tx) => {
+      tx.executeSql(
+        "DELETE FROM AllAnswers;",
+        [],
+        () => {
+          console.log("All data cleared from database.");
+        },
+        (tx, error) => {
+          console.log("Error clearing database:", error);
+        }
+      );
+    },
+    (error) => {
+      console.log("Transaction error:", error);
+    }
+  );
+};
+
+// getFromDB fetches all answers from the database and passes them to the provided callback.
+// Usage: getFromDB(db, setListAnswers);
+// This ensures the UI is updated with the latest data from the database.
+
+// This function retrieves all answers from the database and calls the callback with the results.
+// It is used to fetch data after adding or clearing items in the database.
+export const getFromDB = (db, callback) => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      "SELECT Id, answer FROM AllAnswers;",
+      [],
+      (tx, results) => {
+        let rows = [];
+        for (let i = 0; i < results.rows.length; i++) {
+          rows.push(results.rows.item(i));
+        }
+        console.log("Fetched items from database:", rows);
+        if (callback) callback(rows);
+      },
+      (tx, error) => {
+        console.log("Error fetching items:", error);
+        if (callback) callback([]);
+      }
+    );
   });
 };
-
-//https://github.com/Chidoge/Chime/blob/3aa990844ef703e6632bbcb34df5105c65a96e9d/src/utility/contactsDatabase.js
-// export const insertContactData = selectedCity => {
-//   return new Promise((resolve, reject) => {
-//     SQLite.openDatabase({name: 'Store.db', location: 1}).then(DB => {
-//       DB.executeSql(`INSERT INTO Users (City) VALUES("${selectedCity}")`)
-//         .then(() => {
-//           console.log('Contact inserted');
-//           ToastAndroid.showWithGravity(
-//             'City inserted',
-//             ToastAndroid.LONG,
-//             ToastAndroid.CENTER,
-//           );
-//           resolve(true);
-//         })
-//         .catch(e => {
-//           console.log('Could not insert contact.');
-//           ToastAndroid.showWithGravity(
-//             'Could not insert contact.',
-//             ToastAndroid.LONG,
-//             ToastAndroid.CENTER,
-//           );
-//           reject(e);
-//         });
-//     });
-//   });
-// };

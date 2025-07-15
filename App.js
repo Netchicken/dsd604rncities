@@ -1,8 +1,9 @@
-//import CalcMain from "./calcMain"; //import the main calculator component
-//import DisplayDB from "./displayDB"; // import the database display component
+import Operations from "./Components/Operations";
+import GamePlay from "./Components/GamePlay";
+import Api from "./Components/Api";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-//import { CalcContext, CalcContextProvider } from "./Operations/calcContext";
+import { CalcContext, CalcContextProvider } from "./Operations/calcContext";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,8 +20,8 @@ const App = () => {
             tabBarStyle: { backgroundColor: "#e3f2fd" },
           }}
         >
-          <Tab.Screen name="Calculator" component={CalcMain} options={{ tabBarLabel: "Home" }} />
-          <Tab.Screen name="Database" component={DisplayDB} options={{ tabBarLabel: "Database" }} />
+          <Tab.Screen name="Guess The City" component={GamePlay} options={{ tabBarLabel: "Home" }} />
+          <Tab.Screen name="Database" component={Operations} options={{ tabBarLabel: "Database" }} />
         </Tab.Navigator>
       </NavigationContainer>
     </CalcContextProvider>

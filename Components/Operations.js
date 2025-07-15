@@ -1,18 +1,11 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {ToastAndroid} from 'react-native';
-import SQLite from 'react-native-sqlite-storage';
-import {DBSelect} from './DBOperations';
+import React, { useState, useEffect, useRef } from "react";
+import { ToastAndroid } from "react-native";
+import SQLite from "react-native-sqlite-storage";
+import { DBSelect } from "../Operations/DBOperations";
 //import {DBSelect} from './DBOperations';
 SQLite.DEBUG(true);
 SQLite.enablePromise(false);
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-} from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, SafeAreaView } from "react-native";
 //import GamePlay from './GamePlay';
 
 //https://github.com/Shahid313/react-native-sqlite-storage/blob/main/screens/HomeScreen.js
@@ -30,20 +23,20 @@ import {
 
 const db = SQLite.openDatabase(
   {
-    name: 'Store.db',
+    name: "Store.db",
     createFromLocation: 1, //'~android/app/src/main/assets/www',
   },
   () => {
-    console.log('Operations DB open exists', 'success');
+    console.log("Operations DB open exists", "success");
   },
-  error => {
-    console.log('Operations DB open error', error);
-  },
+  (error) => {
+    console.log("Operations DB open error", error);
+  }
 );
 
-export default function Operations({navigation, route}) {
+export default function Operations({ navigation, route }) {
   const [cities, setCities] = useState([]);
-  const [updateCity, setUpdateCity] = useState('');
+  const [updateCity, setUpdateCity] = useState("");
 
   useEffect(() => {
     // console.log('Operations Useffect', 'success');
@@ -90,49 +83,33 @@ export default function Operations({navigation, route}) {
     //     return [...cities.reverse(), city];
     //   });
     // }
-    ToastAndroid.showWithGravity(
-      'Show cities triggered',
-      ToastAndroid.LONG,
-      ToastAndroid.CENTER,
-    );
+    ToastAndroid.showWithGravity("Show cities triggered", ToastAndroid.LONG, ToastAndroid.CENTER);
     const db = SQLite.openDatabase(
       {
-        name: 'Store.db',
+        name: "Store.db",
         createFromLocation: 1, // '~android/app/src/main/assets/',
       },
       () => {
-        ToastAndroid.showWithGravity(
-          'Operations DB open exists',
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER,
-        );
+        ToastAndroid.showWithGravity("Operations DB open exists", ToastAndroid.SHORT, ToastAndroid.CENTER);
       },
-      error => {
-        ToastAndroid.showWithGravity(
-          'Operations DB open error',
-          ToastAndroid.LONG,
-          ToastAndroid.CENTER,
-        );
-      },
+      (error) => {
+        ToastAndroid.showWithGravity("Operations DB open error", ToastAndroid.LONG, ToastAndroid.CENTER);
+      }
     );
 
     // // console.log('Operations selectDataHandler', 'click');
-    db.transaction(tx => {
-      tx.executeSql('SELECT City FROM Users', [], (tx, results) => {
+    db.transaction((tx) => {
+      tx.executeSql("SELECT City FROM Users", [], (tx, results) => {
         var len = results.rows.length;
-        console.log('Operations selectDataHandler len', len);
+        console.log("Operations selectDataHandler len", len);
 
-        ToastAndroid.showWithGravity(
-          'SELECT City FROM Users - ' + len,
-          ToastAndroid.SHORT,
-          ToastAndroid.BOTTOM,
-        );
+        ToastAndroid.showWithGravity("SELECT City FROM Users - " + len, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
 
         setCities([]); //empty state
         for (let i = 0; i < len; i++) {
           var city = results.rows.item(i).City;
           //spread the hook, add in the new city
-          setCities(cities => {
+          setCities((cities) => {
             return [...cities, city];
           });
         }
@@ -141,57 +118,49 @@ export default function Operations({navigation, route}) {
   };
 
   const updateData = () => {
-    db.transaction(tx => {
+    db.transaction((tx) => {
       tx.executeSql(
-        'UPDATE Users SET City = ?',
+        "UPDATE Users SET City = ?",
         [updateCity],
         () => {
-          Alert.alert('Success!', 'The update was succesful');
+          Alert.alert("Success!", "The update was succesful");
         },
-        error => {
+        (error) => {
           console.log(error);
-        },
+        }
       );
     });
   };
   //DELETE ALL CITIES HANDLER
   const removeDataHandler = () => {
-    ToastAndroid.showWithGravity(
-      'Delete all cities triggered',
-      ToastAndroid.LONG,
-      ToastAndroid.CENTER,
-    );
+    ToastAndroid.showWithGravity("Delete all cities triggered", ToastAndroid.LONG, ToastAndroid.CENTER);
     const db = SQLite.openDatabase(
       {
-        name: 'Store.db',
+        name: "Store.db",
         createFromLocation: 1, // '~android/app/src/main/assets/',
       },
       () => {
-        console.log('removeDataHandler DB open exists', 'success');
+        console.log("removeDataHandler DB open exists", "success");
       },
-      error => {
-        console.log('removeDataHandler DB open error', error);
-      },
+      (error) => {
+        console.log("removeDataHandler DB open error", error);
+      }
     );
 
-    console.log('Operations removeData', 'trigger');
-    db.transaction(tx => {
+    console.log("Operations removeData", "trigger");
+    db.transaction((tx) => {
       tx.executeSql(
-        'DELETE FROM Users',
+        "DELETE FROM Users",
         [],
         () => {
           setCities([]); //empty state
 
-          ToastAndroid.showWithGravity(
-            'Success! All Cities have been deleted',
-            ToastAndroid.LONG,
-            ToastAndroid.CENTER,
-          );
-          console.log('Success!', 'All Cities have been deleted');
+          ToastAndroid.showWithGravity("Success! All Cities have been deleted", ToastAndroid.LONG, ToastAndroid.CENTER);
+          console.log("Success!", "All Cities have been deleted");
         },
-        error => {
+        (error) => {
           console.log(error);
-        },
+        }
       );
     });
   };
@@ -202,7 +171,7 @@ export default function Operations({navigation, route}) {
     // navigation.setParams({ ItemId: 14 });
   };
 
-  const Section = ({children, title}) => {
+  const Section = ({ children, title }) => {
     return (
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}>{title}</Text>
@@ -212,18 +181,12 @@ export default function Operations({navigation, route}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Section
-        style={styles.sectionTitle}
-        title="View and Delete cities in the Database"></Section>
+      <Section style={styles.sectionTitle} title="View and Delete cities in the Database"></Section>
 
-      <TouchableOpacity
-        onPress={() => selectDataHandler()}
-        style={styles.UpdateButton}>
+      <TouchableOpacity onPress={() => selectDataHandler()} style={styles.UpdateButton}>
         <Text style={styles.UpdateButtonText}>Show Cities</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => removeDataHandler()}
-        style={styles.DeleteButton}>
+      <TouchableOpacity onPress={() => removeDataHandler()} style={styles.DeleteButton}>
         <Text style={styles.DeleteButtonText}>Delete All Cities</Text>
       </TouchableOpacity>
 
@@ -245,13 +208,13 @@ export default function Operations({navigation, route}) {
 const styles = StyleSheet.create({
   text: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     margin: 2,
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     // flexDirection: 'column',
   },
 
@@ -259,25 +222,25 @@ const styles = StyleSheet.create({
     width: 120,
     height: 40,
     borderRadius: 10,
-    backgroundColor: 'green',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "green",
+    justifyContent: "center",
+    alignItems: "center",
     margin: 5,
   },
   UpdateButtonText: {
-    color: '#fff',
+    color: "#fff",
   },
   DeleteButton: {
     width: 120,
     height: 40,
     borderRadius: 10,
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "red",
+    justifyContent: "center",
+    alignItems: "center",
     margin: 5,
   },
   DeleteButtonText: {
-    color: '#fff',
+    color: "#fff",
   },
 
   sectionContainer: {
@@ -286,8 +249,8 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 24,
-    fontWeight: '600',
-    justifyContent: 'center',
-    textAlign: 'center',
+    fontWeight: "600",
+    justifyContent: "center",
+    textAlign: "center",
   },
 });

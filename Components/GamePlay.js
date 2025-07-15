@@ -1,5 +1,5 @@
 //https://github.com/AdelRedaa97/react-native-select-dropdown/blob/master/examples/demo2.js
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -10,26 +10,26 @@ import {
   Button,
   ToastAndroid,
   Pressable,
-} from 'react-native';
+} from "react-native";
 
-import {countryDataSmall, createCities} from '../../assets/citiesSmall';
-import SelectDropdown from 'react-native-select-dropdown';
-import SQLite from 'react-native-sqlite-storage';
-import {OpenDB, DBInsert} from './DBOperations';
+import { countryDataSmall, createCities } from "../../assets/citiesSmall";
+import SelectDropdown from "react-native-select-dropdown";
+import SQLite from "react-native-sqlite-storage";
+import { OpenDB, DBInsert } from "../Operations/DBOperationsOLD";
 SQLite.DEBUG(false); //hides annoying errors
 SQLite.enablePromise(false);
 
-export default function GamePlay({navigation, route}) {
+export default function GamePlay({ navigation, route }) {
   // const {ItemName, ItemId} = route.params;
   // https://github.com/mahdi-sharifimehr/RN-Tutorial-Main/blob/RN-Tutorial-20/src/ScreenA.js
 
   const [allData, setAllData] = useState(countryDataSmall); //all the data of the countries
   const [gameData, setGameData] = useState({
-    CountryName: 'Start',
-    CapitalName: 'Start',
+    CountryName: "Start",
+    CapitalName: "Start",
     CapitalLatitude: 0,
     CapitalLongitude: 0,
-    ContinentName: 'Start',
+    ContinentName: "Start",
   }); //holds the selected country details
 
   const [selectedCity, setSelectedCity] = useState(null); //selected city
@@ -46,7 +46,7 @@ export default function GamePlay({navigation, route}) {
     //https://daveceddia.com/useeffect-hook-examples/
 
     const fetchData = () => {
-      console.log('useEffect allData ', allData);
+      console.log("useEffect allData ", allData);
       // LoadGamedata();
     };
     fetchData();
@@ -54,52 +54,40 @@ export default function GamePlay({navigation, route}) {
 
   //runs when selectedcity changes
   useEffect(() => {
-    console.log('useEffect selectedCity ', selectedCity);
+    console.log("useEffect selectedCity ", selectedCity);
     //need to check all three!!! sigh javascript
-    selectedCity === null || selectedCity === undefined || selectedCity === ''
-      ? ''
-      : CheckForWinnerLoser(); //if there is no city dont run check for winner
+    selectedCity === null || selectedCity === undefined || selectedCity === "" ? "" : CheckForWinnerLoser(); //if there is no city dont run check for winner
   }, [selectedCity]);
 
   const CheckForWinnerLoser = () => {
-    console.log(
-      'CheckForWinnerLoser gameData.CapitalName selectedCity',
-      gameData.CapitalName + ' ' + selectedCity,
-    );
+    console.log("CheckForWinnerLoser gameData.CapitalName selectedCity", gameData.CapitalName + " " + selectedCity);
 
     if (
       selectedCity !== null ||
       selectedCity !== undefined ||
-      (selectedCity !== '' && gameData.CapitalName !== 'Start')
+      (selectedCity !== "" && gameData.CapitalName !== "Start")
     ) {
       if (selectedCity == gameData.CapitalName) {
         //you have a winner
 
-        ToastAndroid.showWithGravity(
-          'You win the city is ' + selectedCity,
-          ToastAndroid.LONG,
-          ToastAndroid.CENTER,
-        );
+        ToastAndroid.showWithGravity("You win the city is " + selectedCity, ToastAndroid.LONG, ToastAndroid.CENTER);
 
         // pass in the citiescorrect state, spread it,  and pass both to setCitiesCorrect
-        setCitiesCorrect(citiesCorrect => {
+        setCitiesCorrect((citiesCorrect) => {
           return [...citiesCorrect, selectedCity];
         });
       } else {
         // saveCitiesWrong(gameData.CapitalName);
 
         ToastAndroid.showWithGravity(
-          'You are wrong the city is ' +
-            gameData.CapitalName +
-            ' you said ' +
-            selectedCity,
+          "You are wrong the city is " + gameData.CapitalName + " you said " + selectedCity,
           ToastAndroid.LONG,
-          ToastAndroid.CENTER,
+          ToastAndroid.CENTER
         );
 
         insertData(); //add word to database
         // pass in the citiesWrong state, spread it,  and pass both to setCitiesWrong
-        setCitiesWrong(citiesWrong => {
+        setCitiesWrong((citiesWrong) => {
           return [...citiesWrong.reverse(), selectedCity];
         });
       }
@@ -113,11 +101,7 @@ export default function GamePlay({navigation, route}) {
 
     if (selectedCity.length == 0) {
       //showToastWithGravity('Warning! selectedCity is empty');
-      ToastAndroid.showWithGravity(
-        'Warning! selectedCity is empty',
-        ToastAndroid.LONG,
-        ToastAndroid.CENTER,
-      );
+      ToastAndroid.showWithGravity("Warning! selectedCity is empty", ToastAndroid.LONG, ToastAndroid.CENTER);
     } else {
       //try {
       DBInsert(selectedCity);
@@ -167,19 +151,19 @@ export default function GamePlay({navigation, route}) {
   };
 
   const getRandomNumberBetween = (min, max) => {
-    console.log('getRandomNumberBetween allData.length', max);
+    console.log("getRandomNumberBetween allData.length", max);
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
 
   const onClickHandler = () => {
-    const data = allData.flatMap(item => item.CapitalName).sort();
+    const data = allData.flatMap((item) => item.CapitalName).sort();
     setAllCities(data);
-    console.log('onClickHandler', 'triggered');
+    console.log("onClickHandler", "triggered");
 
     LoadGamedata();
 
-    console.log('onClickHandler Random number', number);
-    console.log('onClickHandler Country Data', allData[number]);
+    console.log("onClickHandler Random number", number);
+    console.log("onClickHandler Country Data", allData[number]);
     // console.log('onClickHandler allcities', allCities);
   };
 
@@ -195,40 +179,31 @@ export default function GamePlay({navigation, route}) {
         ContinentName: selecteditem.ContinentName,
       });
     });
-    console.log('LoadGamedata', gameData);
+    console.log("LoadGamedata", gameData);
   };
 
   const onClickSubmit = () => {
     CheckForWinnerLoser();
     citiesDropdownRef.current.reset();
   };
-  alertItemName = item => {
+  alertItemName = (item) => {
     alert(item);
   };
 
-  const Section = ({children, title}) => {
+  const Section = ({ children, title }) => {
     return (
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}>{title}</Text>
-        <Text style={styles.textSmall}>
-         The city is {gameData.CapitalName ? gameData.CapitalName : ''}
-        </Text>
-        <Text>
-          The Country is {gameData.CountryName ? gameData.CountryName : ''}
-        </Text>
-        <Text>
-          The Continent is{' '}
-          {gameData.ContinentName ? gameData.ContinentName : ''}
-        </Text>
+        <Text style={styles.textSmall}>The city is {gameData.CapitalName ? gameData.CapitalName : ""}</Text>
+        <Text>The Country is {gameData.CountryName ? gameData.CountryName : ""}</Text>
+        <Text>The Continent is {gameData.ContinentName ? gameData.ContinentName : ""}</Text>
       </View>
     );
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Section
-        style={styles.sectionTitle}
-        title="Test your City knowledge"></Section>
+      <Section style={styles.sectionTitle} title="Test your City knowledge"></Section>
       <Button title="Choose a random Country" onPress={onClickHandler}></Button>
 
       <SelectDropdown
@@ -237,7 +212,7 @@ export default function GamePlay({navigation, route}) {
         onSelect={(selectedItem, index) => {
           setSelectedCity(selectedItem);
         }}
-        defaultButtonText={'Choose the city'}
+        defaultButtonText={"Choose the city"}
         buttonTextAfterSelection={(selectedItem, index) => {
           //https://www.npmjs.com/package/react-native-select-dropdown
           // text represented after item is selected
@@ -256,10 +231,11 @@ export default function GamePlay({navigation, route}) {
         style={[
           styles.container,
           {
-            flexDirection: 'row',
-            alignContent: 'space-between',
+            flexDirection: "row",
+            alignContent: "space-between",
           },
-        ]}>
+        ]}
+      >
         <View style={styles.resultcontainer}>
           <ScrollView>
             <Text style={styles.headingoutome}>Correct Cities</Text>
@@ -277,22 +253,11 @@ export default function GamePlay({navigation, route}) {
 
         <View style={styles.resultcontainer}>
           <ScrollView>
-            <Text
-              style={[
-                styles.headingoutome,
-                {marginLeft: 50, alignSelf: 'flex-end'},
-              ]}>
-              Wrong Cities
-            </Text>
+            <Text style={[styles.headingoutome, { marginLeft: 50, alignSelf: "flex-end" }]}>Wrong Cities</Text>
             {citiesWrong.map((item, index) => {
               return (
                 <View>
-                  <Text
-                    key={index}
-                    style={[
-                      styles.item,
-                      {marginLeft: 50, alignSelf: 'flex-end'},
-                    ]}>
+                  <Text key={index} style={[styles.item, { marginLeft: 50, alignSelf: "flex-end" }]}>
                     {item}
                   </Text>
                 </View>
@@ -308,16 +273,16 @@ export default function GamePlay({navigation, route}) {
 const styles = StyleSheet.create({
   resultcontainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   headingoutome: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     fontSize: 18,
-    fontWeight: 'bold',
-    justifyContent: 'center',
-    alignItems: 'center',
+    fontWeight: "bold",
+    justifyContent: "center",
+    alignItems: "center",
   },
   item: {
     paddingLeft: 20,
@@ -329,15 +294,15 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: "400",
   },
   highlight: {
-    fontWeight: '700',
+    fontWeight: "700",
   },
   container: {
     flex: 1,
@@ -348,11 +313,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 40,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     margin: 10,
   },
   textSmall: {
     fontSize: 10,
-        margin: 5,
+    margin: 5,
   },
 });

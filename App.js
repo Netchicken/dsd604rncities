@@ -1,20 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+//import CalcMain from "./calcMain"; //import the main calculator component
+//import DisplayDB from "./displayDB"; // import the database display component
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+//import { CalcContext, CalcContextProvider } from "./Operations/calcContext";
 
-export default function App() {
+const Tab = createBottomTabNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <CalcContextProvider>
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName="Calculator"
+          screenOptions={{
+            headerShown: false,
+            tabBarActiveTintColor: "#1976d2",
+            tabBarInactiveTintColor: "#888",
+            tabBarStyle: { backgroundColor: "#e3f2fd" },
+          }}
+        >
+          <Tab.Screen name="Calculator" component={CalcMain} options={{ tabBarLabel: "Home" }} />
+          <Tab.Screen name="Database" component={DisplayDB} options={{ tabBarLabel: "Database" }} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </CalcContextProvider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;

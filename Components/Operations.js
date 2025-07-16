@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ToastAndroid } from "react-native";
-import SQLite from "react-native-sqlite-storage";
-import { DBSelect } from "../Operations/DBOperations";
+//import SQLite from "react-native-sqlite-storage";
+import { DBSelect } from "../Operations/DbOperations";
+//import { createCities } from "../Assets/citiesSmall"; // Import the function to create cities
 //import {DBSelect} from './DBOperations';
-SQLite.DEBUG(true);
-SQLite.enablePromise(false);
+//SQLite.DEBUG(true);
+//SQLite.enablePromise(false);
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, SafeAreaView } from "react-native";
 //import GamePlay from './GamePlay';
 
@@ -65,119 +66,119 @@ export default function Operations({ navigation, route }) {
   // };
 
   //SHOW CITIES HANDLER
-  const selectDataHandler = () => {
-    // var results = DBSelect();
+  // const selectDataHandler = () => {
+  // var results = DBSelect();
 
-    // ToastAndroid.showWithGravity(
-    //   'selectDataHandler count of results = ' + results + '',
-    //   ToastAndroid.LONG,
-    //   ToastAndroid.CENTER,
-    // );
-    // var len = results.count;
+  // ToastAndroid.showWithGravity(
+  //   'selectDataHandler count of results = ' + results + '',
+  //   ToastAndroid.LONG,
+  //   ToastAndroid.CENTER,
+  // );
+  // var len = results.count;
 
-    // setCities([]); //empty state
-    // for (let i = 0; i < len; i++) {
-    //   var city = results.rows.item(i).City;
-    //   //spread the hook, add in the new city
-    //   setCities(cities => {
-    //     return [...cities.reverse(), city];
-    //   });
-    // }
-    ToastAndroid.showWithGravity("Show cities triggered", ToastAndroid.LONG, ToastAndroid.CENTER);
-    const db = SQLite.openDatabase(
-      {
-        name: "Store.db",
-        createFromLocation: 1, // '~android/app/src/main/assets/',
-      },
-      () => {
-        ToastAndroid.showWithGravity("Operations DB open exists", ToastAndroid.SHORT, ToastAndroid.CENTER);
-      },
-      (error) => {
-        ToastAndroid.showWithGravity("Operations DB open error", ToastAndroid.LONG, ToastAndroid.CENTER);
-      }
-    );
+  // setCities([]); //empty state
+  // for (let i = 0; i < len; i++) {
+  //   var city = results.rows.item(i).City;
+  //   //spread the hook, add in the new city
+  //   setCities(cities => {
+  //     return [...cities.reverse(), city];
+  //   });
+  // }
+  // ToastAndroid.showWithGravity("Show cities triggered", ToastAndroid.LONG, ToastAndroid.CENTER);
+  // const db = SQLite.openDatabase(
+  //   {
+  //     name: "Store.db",
+  //     createFromLocation: 1, // '~android/app/src/main/assets/',
+  //   },
+  //   () => {
+  //     ToastAndroid.showWithGravity("Operations DB open exists", ToastAndroid.SHORT, ToastAndroid.CENTER);
+  //   },
+  //   (error) => {
+  //     ToastAndroid.showWithGravity("Operations DB open error", ToastAndroid.LONG, ToastAndroid.CENTER);
+  //   }
+  //  );
 
-    // // console.log('Operations selectDataHandler', 'click');
-    db.transaction((tx) => {
-      tx.executeSql("SELECT City FROM Users", [], (tx, results) => {
-        var len = results.rows.length;
-        console.log("Operations selectDataHandler len", len);
+  // // console.log('Operations selectDataHandler', 'click');
+  //   db.transaction((tx) => {
+  //     tx.executeSql("SELECT City FROM Users", [], (tx, results) => {
+  //       var len = results.rows.length;
+  //       console.log("Operations selectDataHandler len", len);
 
-        ToastAndroid.showWithGravity("SELECT City FROM Users - " + len, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+  //       ToastAndroid.showWithGravity("SELECT City FROM Users - " + len, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
 
-        setCities([]); //empty state
-        for (let i = 0; i < len; i++) {
-          var city = results.rows.item(i).City;
-          //spread the hook, add in the new city
-          setCities((cities) => {
-            return [...cities, city];
-          });
-        }
-      });
-    });
-  };
+  //       setCities([]); //empty state
+  //       for (let i = 0; i < len; i++) {
+  //         var city = results.rows.item(i).City;
+  //         //spread the hook, add in the new city
+  //         setCities((cities) => {
+  //           return [...cities, city];
+  //         });
+  //       }
+  //     });
+  //   });
+  // };
 
-  const updateData = () => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "UPDATE Users SET City = ?",
-        [updateCity],
-        () => {
-          Alert.alert("Success!", "The update was succesful");
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    });
-  };
+  // const updateData = () => {
+  //   db.transaction((tx) => {
+  //     tx.executeSql(
+  //       "UPDATE Users SET City = ?",
+  //       [updateCity],
+  //       () => {
+  //         Alert.alert("Success!", "The update was succesful");
+  //       },
+  //       (error) => {
+  //         console.log(error);
+  //       }
+  //     );
+  //   });
+  // };
   //DELETE ALL CITIES HANDLER
-  const removeDataHandler = () => {
-    ToastAndroid.showWithGravity("Delete all cities triggered", ToastAndroid.LONG, ToastAndroid.CENTER);
-    const db = SQLite.openDatabase(
-      {
-        name: "Store.db",
-        createFromLocation: 1, // '~android/app/src/main/assets/',
-      },
-      () => {
-        console.log("removeDataHandler DB open exists", "success");
-      },
-      (error) => {
-        console.log("removeDataHandler DB open error", error);
-      }
-    );
+  // const removeDataHandler = () => {
+  //   ToastAndroid.showWithGravity("Delete all cities triggered", ToastAndroid.LONG, ToastAndroid.CENTER);
+  //   const db = SQLite.openDatabase(
+  //     {
+  //       name: "Store.db",
+  //       createFromLocation: 1, // '~android/app/src/main/assets/',
+  //     },
+  //     () => {
+  //       console.log("removeDataHandler DB open exists", "success");
+  //     },
+  //     (error) => {
+  //       console.log("removeDataHandler DB open error", error);
+  //     }
+  //   );
 
-    console.log("Operations removeData", "trigger");
-    db.transaction((tx) => {
-      tx.executeSql(
-        "DELETE FROM Users",
-        [],
-        () => {
-          setCities([]); //empty state
+  //   console.log("Operations removeData", "trigger");
+  //   db.transaction((tx) => {
+  //     tx.executeSql(
+  //       "DELETE FROM Users",
+  //       [],
+  //       () => {
+  //         setCities([]); //empty state
 
-          ToastAndroid.showWithGravity("Success! All Cities have been deleted", ToastAndroid.LONG, ToastAndroid.CENTER);
-          console.log("Success!", "All Cities have been deleted");
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    });
-  };
+  //         ToastAndroid.showWithGravity("Success! All Cities have been deleted", ToastAndroid.LONG, ToastAndroid.CENTER);
+  //         console.log("Success!", "All Cities have been deleted");
+  //       },
+  //       (error) => {
+  //         console.log(error);
+  //       }
+  //     );
+  //   });
+  // };
 
-  const onPressHandler = () => {
-    //  navigation.navigate('Guess_Cities');
-    navigation.goBack();
-    // navigation.setParams({ ItemId: 14 });
-  };
+  // const onPressHandler = () => {
+  //   //  navigation.navigate('Guess_Cities');
+  //   navigation.goBack();
+  //   // navigation.setParams({ ItemId: 14 });
+  // };
 
-  const Section = ({ children, title }) => {
-    return (
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>{title}</Text>
-      </View>
-    );
-  };
+  // const Section = ({ children, title }) => {
+  //   return (
+  //     <View style={styles.sectionContainer}>
+  //       <Text style={styles.sectionTitle}>{title}</Text>
+  //     </View>
+  //   );
+  //  };
 
   return (
     <SafeAreaView style={styles.container}>

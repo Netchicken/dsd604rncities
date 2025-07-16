@@ -12,14 +12,16 @@ import {
   Pressable,
 } from "react-native";
 
-import { countryDataSmall, createCities } from "./Assets/citiesSmall"; // Import the function to create cities
+import { countryDataSmall, createCities } from "../Assets/citiesSmall"; // Import the function to create cities
 import SelectDropdown from "react-native-select-dropdown";
-import SQLite from "react-native-sqlite-storage";
-import { OpenDB, DBInsert } from "../Operations/DBOperationsOLD";
-SQLite.DEBUG(false); //hides annoying errors
-SQLite.enablePromise(false);
+//import SQLite from "react-native-sqlite-storage";
+//import { OpenDB, DBInsert } from "../Operations/DBOperationsOLD";
+//SQLite.DEBUG(false); //hides annoying errors
+//SQLite.enablePromise(false);
 
 export default function GamePlay({ navigation, route }) {
+  console.log("countryDataSmallGamePlay", countryDataSmall);
+  console.log("createCities()Gameplay", createCities());
   // const {ItemName, ItemId} = route.params;
   // https://github.com/mahdi-sharifimehr/RN-Tutorial-Main/blob/RN-Tutorial-20/src/ScreenA.js
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SafeAreaView, StyleSheet, Text, View, ToastAndroid } from "react-native";
 
-import { createCities } from "./Assets/citiesSmall"; // Import the function to create cities
+import { createCities } from "../Assets/citiesSmall"; // Import the function to create cities
 import SelectDropdown from "react-native-select-dropdown";
 
 export default function Api({ navigation, route }) {
@@ -33,6 +33,8 @@ export default function Api({ navigation, route }) {
   //www.youtube.com/watch?v=H5xIWY7pL-k
 
   useEffect(() => {
+    console.log("countryDataSmallAPI", countryDataSmall);
+    console.log("createCities() API", createCities());
     getWeatherFromApi();
     ToastAndroid.showWithGravity(selectedCity, ToastAndroid.LONG, ToastAndroid.CENTER);
   }, [selectedCity]);

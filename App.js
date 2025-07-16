@@ -1,5 +1,3 @@
-import React, { useState, useContext, useEffect } from "react";
-import { SafeAreaView, ScrollView, Text, View, ImageBackground, Image } from "react-native";
 //import Operations from "./Components/Operations";
 import GamePlay from "./Components/GamePlay";
 import Api from "./Components/Api";

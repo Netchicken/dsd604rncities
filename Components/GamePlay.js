@@ -1,7 +1,7 @@
 //https://github.com/AdelRedaa97/react-native-select-dropdown/blob/master/examples/demo2.js
 import React, { useState, useEffect, useRef } from "react";
-import { SafeAreaView, ScrollView, Text, View, Button, ToastAndroid, ImageBackground } from "react-native";
-
+import { ScrollView, Text, View, Button, ToastAndroid, ImageBackground } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { countryDataSmall, dropdownCitiesData } from "../Assets/citiesSmall"; // Import the function to create cities
 import SelectDropdown from "react-native-select-dropdown";
 import { useGamePlayStyles } from "../AllStyles/gamePlayStyles";
@@ -94,40 +94,40 @@ export default function GamePlay({ navigation, route }) {
     </View>
   );
   return (
-    // <ImageBackground resizeMode="cover" source={require("../Assets/bgImage.png")} style={styles.image}>
-    <SafeAreaView style={styles.container}>
-      {/* Game Info Section */}
-      <Section title="Test your City knowledge" />
+    <ImageBackground resizeMode="cover" source={require("../Assets/bgImage.png")} style={styles.image}>
+      <SafeAreaView style={styles.container}>
+        {/* Game Info Section */}
+        <Section title="Test your City knowledge" />
 
-      {/* Button to choose a random country */}
-      <Button title="Choose a random Country" onPress={onClickChooseCountry} />
+        {/* Button to choose a random country */}
+        <Button title="Choose a random Country" onPress={onClickChooseCountry} />
 
-      <View style={{ width: "100%", marginVertical: 16 }}>
-        <SelectDropdown
-          ref={citiesDropdownRef}
-          // data={dropdownCitiesData}
-          data={["A", "B", "C"]}
-          onSelect={(selectedItem) => setSelectedCity(selectedItem)}
-          defaultButtonText={"Choose the city"}
-          buttonTextAfterSelection={(selectedItem) => selectedItem}
-          rowTextForSelection={(item) => item}
-        />
-      </View>
-
-      {/* Results: Correct and Wrong Cities */}
-      <View style={[styles.container, { flexDirection: "row", alignContent: "space-between" }]}>
-        <View style={styles.resultcontainer}>
-          <ScrollView>
-            <Text style={styles.headingoutome}>Correct Cities</Text>
-            {citiesCorrect.map((item, index) => (
-              <View key={index}>
-                <Text style={styles.item}>{item}</Text>
-              </View>
-            ))}
-          </ScrollView>
+        <View style={{ width: "100%", marginVertical: 16 }}>
+          <SelectDropdown
+            ref={citiesDropdownRef}
+            // data={dropdownCitiesData}
+            data={["A", "B", "C"]}
+            onSelect={(selectedItem) => setSelectedCity(selectedItem)}
+            defaultButtonText={"Choose the city"}
+            buttonTextAfterSelection={(selectedItem) => selectedItem}
+            rowTextForSelection={(item) => item}
+          />
         </View>
 
-        {/* <View style={styles.resultcontainer}>
+        {/* Results: Correct and Wrong Cities */}
+        <View style={[styles.container, { flexDirection: "row", alignContent: "space-between" }]}>
+          <View style={styles.resultcontainer}>
+            <ScrollView>
+              <Text style={styles.headingoutome}>Correct Cities</Text>
+              {citiesCorrect.map((item, index) => (
+                <View key={index}>
+                  <Text style={styles.item}>{item}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+
+          {/* <View style={styles.resultcontainer}>
           <ScrollView>
             <Text style={[styles.headingoutome, { marginLeft: 50, alignSelf: "flex-end" }]}>Wrong Cities</Text>
             {citiesWrong.map((item, index) => (
@@ -137,8 +137,8 @@ export default function GamePlay({ navigation, route }) {
             ))}
           </ScrollView>
         </View> */}
-      </View>
-    </SafeAreaView>
-    // </ImageBackground>
+        </View>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }

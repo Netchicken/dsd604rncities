@@ -16,7 +16,6 @@ const App = () => {
 
   return (
     <ContextProvider>
-      {/* <ImageBackground resizeMode="cover" source={require("./Assets/bgImage.png")} style={styles.image}> */}
       <NavigationContainer>
         <Tab.Navigator
           initialRouteName="Guess The City"
@@ -32,7 +31,6 @@ const App = () => {
           <Tab.Screen name="Weather" component={Api} options={{ tabBarLabel: "Weather" }} />
         </Tab.Navigator>
       </NavigationContainer>
-      {/* </ImageBackground> */}
     </ContextProvider>
   );
 };

@@ -12,7 +12,7 @@ import {
   Pressable,
 } from "react-native";
 
-import { countryDataSmall, createCities } from "../../assets/citiesSmall";
+import { countryDataSmall, createCities } from "./Assets/citiesSmall"; // Import the function to create cities
 import SelectDropdown from "react-native-select-dropdown";
 import SQLite from "react-native-sqlite-storage";
 import { OpenDB, DBInsert } from "../Operations/DBOperationsOLD";

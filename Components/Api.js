@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {SafeAreaView, StyleSheet, Text, View, ToastAndroid} from 'react-native';
+import React, { useState, useEffect, useRef } from "react";
+import { SafeAreaView, StyleSheet, Text, View, ToastAndroid } from "react-native";
 
-import {createCities} from '../../assets/citiesSmall';
-import SelectDropdown from 'react-native-select-dropdown';
+import { createCities } from "./Assets/citiesSmall"; // Import the function to create cities
+import SelectDropdown from "react-native-select-dropdown";
 
-export default function Api({navigation, route}) {
+export default function Api({ navigation, route }) {
   //https://home.openweathermap.org/
   //3f2e5dbaf5cf57927bf90f6b1acf3206   api key
   //https://openweathermap.org/current
@@ -34,25 +34,21 @@ export default function Api({navigation, route}) {
 
   useEffect(() => {
     getWeatherFromApi();
-    ToastAndroid.showWithGravity(
-      selectedCity,
-      ToastAndroid.LONG,
-      ToastAndroid.CENTER,
-    );
+    ToastAndroid.showWithGravity(selectedCity, ToastAndroid.LONG, ToastAndroid.CENTER);
   }, [selectedCity]);
 
   const getWeatherFromApi = async () => {
     let response = await fetch(
-      'https://api.openweathermap.org/data/2.5/weather?q=' +
+      "https://api.openweathermap.org/data/2.5/weather?q=" +
         selectedCity +
-        '&appid=3f2e5dbaf5cf57927bf90f6b1acf3206&units=metric',
+        "&appid=3f2e5dbaf5cf57927bf90f6b1acf3206&units=metric"
     );
 
-    console.log('response', response);
+    console.log("response", response);
     let json = await response.json();
 
     setWeather(json);
-    console.log('weather', weather);
+    console.log("weather", weather);
     setCityTemp(json.main.temp);
     setCityDetails([
       json.main.temp,
@@ -67,10 +63,10 @@ export default function Api({navigation, route}) {
       json.sys.sunrise,
       json.sys.sunset,
     ]);
-    console.log('weather json', json);
+    console.log("weather json", json);
   };
 
-  const Section = ({children, title}) => {
+  const Section = ({ children, title }) => {
     return (
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}>{title}</Text>
@@ -80,9 +76,7 @@ export default function Api({navigation, route}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Section
-        style={styles.sectionTitle}
-        title=" Choose a city to see the weather"></Section>
+      <Section style={styles.sectionTitle} title=" Choose a city to see the weather"></Section>
 
       <SelectDropdown
         ref={citiesDropdownRef}
@@ -90,7 +84,7 @@ export default function Api({navigation, route}) {
         onSelect={(selectedItem, index) => {
           setSelectedCity(selectedItem);
         }}
-        defaultButtonText={'Select city'}
+        defaultButtonText={"Select city"}
         buttonTextAfterSelection={(selectedItem, index) => {
           //https://www.npmjs.com/package/react-native-select-dropdown
           // text represented after item is selected
@@ -106,20 +100,14 @@ export default function Api({navigation, route}) {
       />
       <View>
         <Text style={styles.text}>
-          The Temperature in{' '}
-          {selectedCity === null ? 'no city selected' : selectedCity} is{' '}
-          {cityTemp}C
+          The Temperature in {selectedCity === null ? "no city selected" : selectedCity} is {cityTemp}C
         </Text>
 
         <View>
           <Text style={styles.text}>The Humidity is {cityDetails[1]}%</Text>
           <Text style={styles.text}>The Preasure is {cityDetails[2]}</Text>
-          <Text style={styles.text}>
-            The Max Temperature is {cityDetails[3]}C
-          </Text>
-          <Text style={styles.text}>
-            The Min Temperature is {cityDetails[4]}C
-          </Text>
+          <Text style={styles.text}>The Max Temperature is {cityDetails[3]}C</Text>
+          <Text style={styles.text}>The Min Temperature is {cityDetails[4]}C</Text>
           <Text style={styles.text}>The Description is {cityDetails[5]}</Text>
         </View>
       </View>
@@ -130,14 +118,14 @@ export default function Api({navigation, route}) {
 const styles = StyleSheet.create({
   text: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     margin: 10,
   },
   container: {
     flex: 1,
     // justifyContent: 'center',
-    alignItems: 'center',
-    color: 'black',
+    alignItems: "center",
+    color: "black",
     // paddingTop: StatusBar.currentHeight,
   },
   sectionContainer: {
@@ -146,7 +134,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
 

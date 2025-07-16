@@ -1,30 +1,38 @@
+import React, { useState, useContext, useEffect } from "react";
+import { SafeAreaView, ScrollView, Text, View, ImageBackground, Image } from "react-native";
 import Operations from "./Components/Operations";
 import GamePlay from "./Components/GamePlay";
 import Api from "./Components/Api";
+import { useAppStyles } from "./AllStyles/appStyles";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { CalcContext, CalcContextProvider } from "./Operations/calcContext";
+import { ContextProvider } from "./Operations/Context";
 
 const Tab = createBottomTabNavigator();
 
 const App = () => {
+  const styles = useAppStyles();
+
   return (
-    <CalcContextProvider>
-      <NavigationContainer>
-        <Tab.Navigator
-          initialRouteName="Calculator"
-          screenOptions={{
-            headerShown: false,
-            tabBarActiveTintColor: "#1976d2",
-            tabBarInactiveTintColor: "#888",
-            tabBarStyle: { backgroundColor: "#e3f2fd" },
-          }}
-        >
-          <Tab.Screen name="Guess The City" component={GamePlay} options={{ tabBarLabel: "Home" }} />
-          <Tab.Screen name="Database" component={Operations} options={{ tabBarLabel: "Database" }} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </CalcContextProvider>
+    <ContextProvider>
+      <ImageBackground resizeMode="cover" source={require("./Assets/bgImage.png")} style={styles.image}>
+        <NavigationContainer>
+          <Tab.Navigator
+            initialRouteName="Calculator"
+            screenOptions={{
+              headerShown: false,
+              tabBarActiveTintColor: "#1976d2",
+              tabBarInactiveTintColor: "#888",
+              tabBarStyle: { backgroundColor: "#e3f2fd" },
+            }}
+          >
+            <Tab.Screen name="Guess The City" component={GamePlay} options={{ tabBarLabel: "Home" }} />
+            <Tab.Screen name="Database" component={Operations} options={{ tabBarLabel: "Database" }} />
+            <Tab.Screen name="Weather" component={Api} options={{ tabBarLabel: "Weather" }} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </ImageBackground>
+    </ContextProvider>
   );
 };
 

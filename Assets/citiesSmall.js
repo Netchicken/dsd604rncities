@@ -5,7 +5,7 @@
 //city data. the Select  needs to be in the array object of
 //value and label have to map the city data to this object
 // const [selectData, setSelectData] = useState([{ value: "1", label: "city" }]);
-export function createCities() {
+export function dropdownCitiesData() {
   const getSelectDataList = countryDataSmall.map((item) => item.CapitalName);
   //https://stackoverflow.com/questions/43572436/sort-an-array-of-objects-in-react-and-render-them
   getSelectDataList.sort();

@@ -2,9 +2,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SafeAreaView, ScrollView, Text, View, Button, ToastAndroid, ImageBackground } from "react-native";
 
-import { countryDataSmall, createCities } from "../Assets/citiesSmall"; // Import the function to create cities
+import { countryDataSmall, dropdownCitiesData } from "../Assets/citiesSmall"; // Import the function to create cities
 import SelectDropdown from "react-native-select-dropdown";
 import { useGamePlayStyles } from "../AllStyles/gamePlayStyles";
+import { randomNumberGenerator } from "./gamePlayOperations"; // Import the random number generator function
 
 export default function GamePlay({ navigation, route }) {
   const styles = useGamePlayStyles();
@@ -30,9 +31,6 @@ export default function GamePlay({ navigation, route }) {
   // Ref for dropdown reset
   const citiesDropdownRef = useRef({});
 
-  // Helper: Get a random integer between min and max (inclusive)
-  const getRandomNumberBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
-
   // Handler: Load new random country/city for the game
   const onClickChooseCountry = () => {
     console.log("Button pressed");
@@ -41,7 +39,7 @@ export default function GamePlay({ navigation, route }) {
     setAllCities(createCities());
 
     // Pick a random country
-    const randomNumber = getRandomNumberBetween(0, allData.length - 1);
+    const randomNumber = randomNumberGenerator(0, allData.length - 1);
     console.log("Random number selected:", randomNumber);
     const selecteditem = allData[randomNumber];
     console.log("Selected item:", selecteditem);
@@ -107,12 +105,12 @@ export default function GamePlay({ navigation, route }) {
       <View style={{ width: "100%", marginVertical: 16 }}>
         <SelectDropdown
           ref={citiesDropdownRef}
-          data={allCities}
+          // data={dropdownCitiesData}
+          data={["A", "B", "C"]}
           onSelect={(selectedItem) => setSelectedCity(selectedItem)}
           defaultButtonText={"Choose the city"}
           buttonTextAfterSelection={(selectedItem) => selectedItem}
           rowTextForSelection={(item) => item}
-          ImageBackgroundcolor={"#fff"}
         />
       </View>
 
@@ -129,7 +127,7 @@ export default function GamePlay({ navigation, route }) {
           </ScrollView>
         </View>
 
-        <View style={styles.resultcontainer}>
+        {/* <View style={styles.resultcontainer}>
           <ScrollView>
             <Text style={[styles.headingoutome, { marginLeft: 50, alignSelf: "flex-end" }]}>Wrong Cities</Text>
             {citiesWrong.map((item, index) => (
@@ -138,7 +136,7 @@ export default function GamePlay({ navigation, route }) {
               </View>
             ))}
           </ScrollView>
-        </View>
+        </View> */}
       </View>
     </SafeAreaView>
     // </ImageBackground>

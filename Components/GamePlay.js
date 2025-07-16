@@ -9,17 +9,20 @@ import {
   Colors,
   Button,
   ToastAndroid,
+  ImageBackground,
   Pressable,
 } from "react-native";
 
 import { countryDataSmall, createCities } from "../Assets/citiesSmall"; // Import the function to create cities
 import SelectDropdown from "react-native-select-dropdown";
+import { useAppStyles } from "../AllStyles/appStyles";
 //import SQLite from "react-native-sqlite-storage";
 //import { OpenDB, DBInsert } from "../Operations/DBOperationsOLD";
 //SQLite.DEBUG(false); //hides annoying errors
 //SQLite.enablePromise(false);
 
 export default function GamePlay({ navigation, route }) {
+  const styles = useAppStyles();
   console.log("countryDataSmallGamePlay", countryDataSmall);
   console.log("createCities()Gameplay", createCities());
   // const {ItemName, ItemId} = route.params;
@@ -204,71 +207,73 @@ export default function GamePlay({ navigation, route }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Section style={styles.sectionTitle} title="Test your City knowledge"></Section>
-      <Button title="Choose a random Country" onPress={onClickHandler}></Button>
+    <ImageBackground resizeMode="cover" source={require("../Assets/bgImage.png")} style={styles.image}>
+      <SafeAreaView style={styles.container}>
+        <Section style={styles.sectionTitle} title="Test your City knowledge"></Section>
+        <Button title="Choose a random Country" onPress={onClickHandler}></Button>
 
-      <SelectDropdown
-        ref={citiesDropdownRef}
-        data={allCities}
-        onSelect={(selectedItem, index) => {
-          setSelectedCity(selectedItem);
-        }}
-        defaultButtonText={"Choose the city"}
-        buttonTextAfterSelection={(selectedItem, index) => {
-          //https://www.npmjs.com/package/react-native-select-dropdown
-          // text represented after item is selected
-          // if data array is an array of objects then return selectedItem.property to render after item is selected
-          return selectedItem;
-        }}
-        rowTextForSelection={(item, index) => {
-          // text represented for each item in dropdown
-          // if data array is an array of objects then return item.property to represent item in dropdown
-          return item;
-        }}
-      />
+        <SelectDropdown
+          ref={citiesDropdownRef}
+          data={allCities}
+          onSelect={(selectedItem, index) => {
+            setSelectedCity(selectedItem);
+          }}
+          defaultButtonText={"Choose the city"}
+          buttonTextAfterSelection={(selectedItem, index) => {
+            //https://www.npmjs.com/package/react-native-select-dropdown
+            // text represented after item is selected
+            // if data array is an array of objects then return selectedItem.property to render after item is selected
+            return selectedItem;
+          }}
+          rowTextForSelection={(item, index) => {
+            // text represented for each item in dropdown
+            // if data array is an array of objects then return item.property to represent item in dropdown
+            return item;
+          }}
+        />
 
-      {/* <Button title="Submit your answer" onPress={onClickSubmit}></Button> */}
-      <View
-        style={[
-          styles.container,
-          {
-            flexDirection: "row",
-            alignContent: "space-between",
-          },
-        ]}
-      >
-        <View style={styles.resultcontainer}>
-          <ScrollView>
-            <Text style={styles.headingoutome}>Correct Cities</Text>
-            {citiesCorrect.map((item, index) => {
-              return (
-                <View>
-                  <Text key={index} style={styles.item}>
-                    {item}
-                  </Text>
-                </View>
-              );
-            })}
-          </ScrollView>
+        {/* <Button title="Submit your answer" onPress={onClickSubmit}></Button> */}
+        <View
+          style={[
+            styles.container,
+            {
+              flexDirection: "row",
+              alignContent: "space-between",
+            },
+          ]}
+        >
+          <View style={styles.resultcontainer}>
+            <ScrollView>
+              <Text style={styles.headingoutome}>Correct Cities</Text>
+              {citiesCorrect.map((item, index) => {
+                return (
+                  <View>
+                    <Text key={index} style={styles.item}>
+                      {item}
+                    </Text>
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </View>
+
+          <View style={styles.resultcontainer}>
+            <ScrollView>
+              <Text style={[styles.headingoutome, { marginLeft: 50, alignSelf: "flex-end" }]}>Wrong Cities</Text>
+              {citiesWrong.map((item, index) => {
+                return (
+                  <View>
+                    <Text key={index} style={[styles.item, { marginLeft: 50, alignSelf: "flex-end" }]}>
+                      {item}
+                    </Text>
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </View>
         </View>
-
-        <View style={styles.resultcontainer}>
-          <ScrollView>
-            <Text style={[styles.headingoutome, { marginLeft: 50, alignSelf: "flex-end" }]}>Wrong Cities</Text>
-            {citiesWrong.map((item, index) => {
-              return (
-                <View>
-                  <Text key={index} style={[styles.item, { marginLeft: 50, alignSelf: "flex-end" }]}>
-                    {item}
-                  </Text>
-                </View>
-              );
-            })}
-          </ScrollView>
-        </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 

@@ -1,20 +1,20 @@
 //https://github.com/AdelRedaa97/react-native-select-dropdown/blob/master/examples/demo2.js
 import React, { useState, useEffect, useRef } from "react";
-import { ScrollView, Text, View, Button, ToastAndroid, ImageBackground } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, ScrollView, Text, View, Button, ToastAndroid, ImageBackground } from "react-native";
+//import { SafeAreaView } from "react-native-safe-area-context";
 import { countryDataSmall, dropdownCitiesData } from "../Assets/citiesSmall"; // Import the function to create cities
-import SelectDropdown from "react-native-select-dropdown";
+//import SelectDropdown from "react-native-select-dropdown";
 import { useGamePlayStyles } from "../AllStyles/gamePlayStyles";
 import { randomNumberGenerator } from "./gamePlayOperations"; // Import the random number generator function
 
-export default function GamePlay({ navigation, route }) {
+export default function GamePlay() {
   const styles = useGamePlayStyles();
   // console.log("countryDataSmallGamePlay", countryDataSmall);
-  // console.log("createCities()Gameplay", createCities());
+  // console.log("dropdownCitiesData()Gameplay", dropdownCitiesData());
 
   // State for all country data and dropdown cities
   const [allData] = useState(countryDataSmall);
-  const [allCities, setAllCities] = useState(createCities());
+  const [allCities, setAllCities] = useState(dropdownCitiesData());
   const [gameData, setGameData] = useState({
     CountryName: "Start",
     CapitalName: "Start",
@@ -28,15 +28,13 @@ export default function GamePlay({ navigation, route }) {
   // State for correct and wrong answers
   const [citiesCorrect, setCitiesCorrect] = useState([]);
   const [citiesWrong, setCitiesWrong] = useState([]);
-  // Ref for dropdown reset
-  const citiesDropdownRef = useRef({});
 
   // Handler: Load new random country/city for the game
   const onClickChooseCountry = () => {
     console.log("Button pressed");
     // Update dropdown data (if needed)
-    console.log("Updating cities dropdown data", createCities());
-    setAllCities(createCities());
+    console.log("Updating cities dropdown data", dropdownCitiesData());
+    setAllCities(dropdownCitiesData());
 
     // Pick a random country
     const randomNumber = randomNumberGenerator(0, allData.length - 1);
@@ -54,11 +52,6 @@ export default function GamePlay({ navigation, route }) {
 
     // Reset selected city
     setSelectedCity(null);
-
-    // Reset dropdown selection
-    if (citiesDropdownRef.current && citiesDropdownRef.current.reset) {
-      citiesDropdownRef.current.reset();
-    }
   };
 
   // Handler: Check if the selected city is correct or wrong
@@ -102,17 +95,7 @@ export default function GamePlay({ navigation, route }) {
         {/* Button to choose a random country */}
         <Button title="Choose a random Country" onPress={onClickChooseCountry} />
 
-        <View style={{ width: "100%", marginVertical: 16 }}>
-          <SelectDropdown
-            ref={citiesDropdownRef}
-            // data={dropdownCitiesData}
-            data={["A", "B", "C"]}
-            onSelect={(selectedItem) => setSelectedCity(selectedItem)}
-            defaultButtonText={"Choose the city"}
-            buttonTextAfterSelection={(selectedItem) => selectedItem}
-            rowTextForSelection={(item) => item}
-          />
-        </View>
+        <View style={{ width: "100%", marginVertical: 16 }}></View>
 
         {/* Results: Correct and Wrong Cities */}
         <View style={[styles.container, { flexDirection: "row", alignContent: "space-between" }]}>
@@ -127,16 +110,16 @@ export default function GamePlay({ navigation, route }) {
             </ScrollView>
           </View>
 
-          {/* <View style={styles.resultcontainer}>
-          <ScrollView>
-            <Text style={[styles.headingoutome, { marginLeft: 50, alignSelf: "flex-end" }]}>Wrong Cities</Text>
-            {citiesWrong.map((item, index) => (
-              <View key={index}>
-                <Text style={[styles.item, { marginLeft: 50, alignSelf: "flex-end" }]}>{item}</Text>
-              </View>
-            ))}
-          </ScrollView>
-        </View> */}
+          <View style={styles.resultcontainer}>
+            <ScrollView>
+              <Text style={[styles.headingoutome, { marginLeft: 50, alignSelf: "flex-end" }]}>Wrong Cities</Text>
+              {citiesWrong.map((item, index) => (
+                <View key={index}>
+                  <Text style={[styles.item, { marginLeft: 50, alignSelf: "flex-end" }]}>{item}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
         </View>
       </SafeAreaView>
     </ImageBackground>

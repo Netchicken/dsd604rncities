@@ -1,0 +1,19 @@
+
+  // Ref for dropdown reset
+  //const citiesDropdownRef = useRef({});
+
+   // Reset dropdown selection
+    // if (citiesDropdownRef.current && citiesDropdownRef.current.reset) {
+    //   citiesDropdownRef.current.reset();
+    // }
+
+
+      {/* <SelectDropdown
+            ref={citiesDropdownRef}
+            // data={dropdownCitiesData}
+            data={["A", "B", "C"]}
+            onSelect={(selectedItem) => setSelectedCity(selectedItem)}
+            defaultButtonText={"Choose the city"}
+            buttonTextAfterSelection={(selectedItem) => selectedItem}
+            rowTextForSelection={(item) => item}
+          /> */}

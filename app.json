@@ -23,9 +23,7 @@
       "edgeToEdgeEnabled": true,
       "package": "com.netchicken.dsd604rncities"
     },
-    "web": {
-      "favicon": "./adaptive/favicon.png"
-    },
+
     "extra": {
       "eas": {
         "projectId": "07613fc7-6efe-4440-9f46-d14f338ebe06"

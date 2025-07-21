@@ -1,6 +1,5 @@
 //import Operations from "./Components/Operations";
 import React from "react";
-import { SafeAreaProvider, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import GamePlay from "./Components/GamePlay";
@@ -14,11 +13,12 @@ const App = () => {
   console.log("App component rendered");
 
   return (
-       <SafeAreaView style={styles.container}>
+    <>
       <ContextProvider>
         <NavigationContainer>
           <Tab.Navigator
             initialRouteName="Guess The City"
+            backBehavior="history" // This will keep the history of the navigation stack
             screenOptions={{
               headerShown: false,
               tabBarActiveTintColor: "#1976d2",
@@ -32,17 +32,8 @@ const App = () => {
           </Tab.Navigator>
         </NavigationContainer>
       </ContextProvider>
-    </SafeAreaProvider>
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});
-
-
 
 export default App;
